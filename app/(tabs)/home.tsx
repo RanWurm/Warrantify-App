@@ -9,13 +9,22 @@ import {
 } from 'react-native';
 import { Stack } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons';
+
+// Define Warranty Type
+type Warranty = {
+  id: string;
+  product: string;
+  expiryDate: string;
+  purchaseDate: string;
+  status: 'active' | 'expiring' | 'expired';
+};
 
 export default function HomeScreen() {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
-  const warranties = [
+  const warranties: Warranty[] = [
     {
       id: '1',
       product: 'Samsung TV',
@@ -39,7 +48,8 @@ export default function HomeScreen() {
     },
   ];
 
-  const getStatusColor = (status) => {
+  // Fetch status gradient colors
+  const getStatusColor = (status: 'active' | 'expiring' | 'expired') => {
     switch (status) {
       case 'active':
         return ['#34D399', '#10B981'];
@@ -52,6 +62,7 @@ export default function HomeScreen() {
     }
   };
 
+  // Fetch autocomplete suggestions
   const fetchAutocomplete = async (input: string) => {
     if (!input) {
       setSuggestions([]);
@@ -59,7 +70,7 @@ export default function HomeScreen() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/autocomplete?query=${input}`);
+      const response = await fetch(`http://10.0.0.6:5000/autocomplete?query=${input}`);
       const data = await response.json();
       setSuggestions(data);
     } catch (error) {
@@ -77,7 +88,7 @@ export default function HomeScreen() {
     setSuggestions([]);
   };
 
-  const renderWarrantyItem = ({ item }) => (
+  const renderWarrantyItem = ({ item }: { item: Warranty }) => (
     <TouchableOpacity activeOpacity={0.8}>
       <View style={styles.warrantyCard}>
         <View style={styles.warrantyHeader}>
@@ -112,9 +123,7 @@ export default function HomeScreen() {
       <Stack.Screen
         options={{
           title: 'My Warranties',
-          headerStyle: {
-            backgroundColor: 'transparent',
-          },
+          headerStyle: { backgroundColor: 'transparent' },
           headerShadowVisible: false,
           headerLargeTitle: true,
         }}
@@ -132,7 +141,7 @@ export default function HomeScreen() {
             onChangeText={handleInputChange}
           />
           {query.length > 0 && (
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => {
                 setQuery('');
                 setSuggestions([]);
@@ -144,22 +153,20 @@ export default function HomeScreen() {
           )}
         </View>
         {suggestions.length > 0 && (
-          <View style={styles.suggestionsContainer}>
-            <FlatList
-              data={suggestions}
-              keyExtractor={(item, index) => `${item}-${index}`}
-              renderItem={({ item }) => (
-                <TouchableOpacity 
-                  style={styles.suggestionItem}
-                  onPress={() => handleSuggestionPress(item)}
-                >
-                  <Ionicons name="search-outline" size={16} color="#666" style={styles.suggestionIcon} />
-                  <Text style={styles.suggestionText}>{item}</Text>
-                </TouchableOpacity>
-              )}
-              style={styles.suggestionsList}
-            />
-          </View>
+          <FlatList
+            data={suggestions}
+            keyExtractor={(item, index) => `${item}-${index}`}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.suggestionItem}
+                onPress={() => handleSuggestionPress(item)}
+              >
+                <Ionicons name="search-outline" size={16} color="#666" style={styles.suggestionIcon} />
+                <Text style={styles.suggestionText}>{item}</Text>
+              </TouchableOpacity>
+            )}
+            style={styles.suggestionsList}
+          />
         )}
       </View>
 
@@ -173,10 +180,7 @@ export default function HomeScreen() {
       />
 
       <TouchableOpacity style={styles.fab}>
-        <LinearGradient
-          colors={['#1B98F5', '#0077E6']}
-          style={styles.fabGradient}
-        >
+        <LinearGradient colors={['#1B98F5', '#0077E6']} style={styles.fabGradient}>
           <Text style={styles.fabText}>+</Text>
         </LinearGradient>
       </TouchableOpacity>
@@ -185,162 +189,27 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  gradient: {
-    flex: 1,
-  },
-  searchContainer: {
-    padding: 16,
-    backgroundColor: '#ffffff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  searchInput: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    marginBottom: 8,
-  },
-  suggestionsList: {
-    maxHeight: 150,
-  },
-  suggestionItem: {
-    padding: 8,
-    backgroundColor: '#f9f9f9',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  listContainer: {
-    padding: 16,
-    paddingBottom: 80,
-  },
-  warrantyCard: {
-    backgroundColor: '#ffffff',
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  warrantyHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  warrantyProduct: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1a1f36',
-  },
-  statusBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-  },
-  statusText: {
-    color: '#ffffff',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  dateContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  dateItem: {
-    flex: 1,
-  },
-  dateLabel: {
-    fontSize: 12,
-    color: '#8898aa',
-    marginBottom: 4,
-  },
-  dateValue: {
-    fontSize: 14,
-    color: '#1a1f36',
-    fontWeight: '500',
-  },
-  fab: {
-    position: 'absolute',
-    right: 16,
-    bottom: 16,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  fabGradient: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  fabText: {
-    color: '#ffffff',
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  searchContainer: {
-    padding: 16,
-    backgroundColor: '#ffffff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-    zIndex: 1,
-  },
-  searchInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    height: 48,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
-    height: '100%',
-    fontSize: 16,
-    color: '#333',
-    paddingVertical: 8,
-  },
-  clearButton: {
-    padding: 4,
-  },
-  suggestionsContainer: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    marginTop: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  suggestionsList: {
-    maxHeight: 200,
-  },
-  suggestionItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  suggestionIcon: {
-    marginRight: 12,
-  },
-  suggestionText: {
-    fontSize: 16,
-    color: '#333',
-  },
+  gradient: { flex: 1 },
+  searchContainer: { padding: 16, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ddd' },
+  searchInputContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#f5f5f5', borderRadius: 12, paddingHorizontal: 12, height: 48 },
+  searchIcon: { marginRight: 8 },
+  searchInput: { flex: 1, fontSize: 16, color: '#333' },
+  clearButton: { padding: 4 },
+  suggestionsList: { maxHeight: 200 },
+  suggestionItem: { flexDirection: 'row', alignItems: 'center', padding: 12, borderBottomWidth: 1, borderBottomColor: '#ddd' },
+  suggestionIcon: { marginRight: 12 },
+  suggestionText: { fontSize: 16, color: '#333' },
+  listContainer: { padding: 16 },
+  warrantyCard: { backgroundColor: '#fff', borderRadius: 16, padding: 16, marginBottom: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 8, elevation: 2 },
+  warrantyHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  warrantyProduct: { fontSize: 18, fontWeight: '600', color: '#1a1f36' },
+  statusBadge: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20 },
+  statusText: { color: '#fff', fontSize: 12, fontWeight: '600' },
+  dateContainer: { flexDirection: 'row', justifyContent: 'space-between' },
+  dateItem: { flex: 1 },
+  dateLabel: { fontSize: 12, color: '#8898aa', marginBottom: 4 },
+  dateValue: { fontSize: 14, color: '#1a1f36', fontWeight: '500' },
+  fab: { position: 'absolute', right: 16, bottom: 16, width: 56, height: 56, borderRadius: 28, overflow: 'hidden', elevation: 4 },
+  fabGradient: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  fabText: { color: '#fff', fontSize: 24, fontWeight: '600' },
 });
