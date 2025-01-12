@@ -9,6 +9,7 @@ import {
   Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Stack } from 'expo-router';
 
 export default function AddWarranty() {
   const [productName, setProductName] = useState('');
@@ -22,111 +23,118 @@ export default function AddWarranty() {
   const [notes, setNotes] = useState('');
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Header Section */}
-      <View style={styles.header}>
-        <Ionicons name="document-outline" size={50} color="#555" />
-        <Text style={styles.title}>Add a warranty</Text>
-        <Text style={styles.subtitle}>
-          Keep track of all of your receipts simply and easily!
-        </Text>
-      </View>
+    <>
+      {/* Remove the header */}
+      <Stack.Screen options={{ headerShown: false }} />
 
-      {/* Illustration */}
-      <View style={styles.imageContainer}>
-        <Image
-          source={require('../../assets/images/warranty-placeholder.png')} // Replace with your image path
-          style={styles.image}
-        />
-      </View>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 70 }}>
+        {/* Header Section */}
+        <View style={styles.header}>
+          <View style={styles.headerRow}>
+            <Ionicons name="document-outline" size={70} color="#555" style={styles.headerIcon} />
+            <Text style={styles.title}>Add a warranty</Text>
+          </View>
+          <Text style={styles.subtitle}>
+            Keep track of all of your receipts simply and easily!
+          </Text>
+        </View>
 
-      {/* Input Fields */}
-      <View style={styles.inputContainer}>
-        <View style={styles.row}>
-          <TextInput
-            style={styles.input}
-            placeholder="Product Name"
-            value={productName}
-            onChangeText={setProductName}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Service Center"
-            value={serviceCenter}
-            onChangeText={setServiceCenter}
+        {/* Illustration */}
+        <View style={styles.imageContainer}>
+          <Image
+            source={require('../../assets/images/warranty-placeholder.png')} // Replace with your image path
+            style={styles.image}
           />
         </View>
 
-        <View style={styles.row}>
+        {/* Input Fields */}
+        <View style={styles.inputContainer}>
+          <View style={styles.row}>
+            <TextInput
+              style={styles.input}
+              placeholder="Product Name"
+              value={productName}
+              onChangeText={setProductName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Service Center"
+              value={serviceCenter}
+              onChangeText={setServiceCenter}
+            />
+          </View>
+
+          <View style={styles.row}>
+            <TextInput
+              style={styles.input}
+              placeholder="Manufacturer"
+              value={manufacturer}
+              onChangeText={setManufacturer}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Store"
+              value={store}
+              onChangeText={setStore}
+            />
+          </View>
+
+          <View style={styles.row}>
+            <TextInput
+              style={styles.input}
+              placeholder="Model"
+              value={model}
+              onChangeText={setModel}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Price"
+              value={price}
+              onChangeText={setPrice}
+              keyboardType="numeric"
+            />
+          </View>
+
+          <View style={styles.row}>
+            <TextInput
+              style={styles.input}
+              placeholder="Purchase date"
+              value={purchaseDate}
+              onChangeText={setPurchaseDate}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Expiration date"
+              value={expirationDate}
+              onChangeText={setExpirationDate}
+            />
+          </View>
+
+          <View style={styles.row}>
+            <TouchableOpacity style={styles.iconButton}>
+              <Ionicons name="scan-outline" size={24} color="#555" />
+              <Text style={styles.iconButtonText}>Scan Receipt</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconButton}>
+              <Ionicons name="add-outline" size={24} color="#555" />
+              <Text style={styles.iconButtonText}>Add Files</Text>
+            </TouchableOpacity>
+          </View>
+
           <TextInput
-            style={styles.input}
-            placeholder="Manufacturer"
-            value={manufacturer}
-            onChangeText={setManufacturer}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Store"
-            value={store}
-            onChangeText={setStore}
+            style={styles.notesInput}
+            placeholder="Add notes"
+            value={notes}
+            onChangeText={setNotes}
+            multiline
           />
         </View>
 
-        <View style={styles.row}>
-          <TextInput
-            style={styles.input}
-            placeholder="Model"
-            value={model}
-            onChangeText={setModel}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Price"
-            value={price}
-            onChangeText={setPrice}
-            keyboardType="numeric"
-          />
-        </View>
-
-        <View style={styles.row}>
-          <TextInput
-            style={styles.input}
-            placeholder="Purchase date"
-            value={purchaseDate}
-            onChangeText={setPurchaseDate}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Expiration date"
-            value={expirationDate}
-            onChangeText={setExpirationDate}
-          />
-        </View>
-
-        <View style={styles.row}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Ionicons name="scan-outline" size={24} color="#555" />
-            <Text style={styles.iconButtonText}>Scan Receipt</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Ionicons name="add-outline" size={24} color="#555" />
-            <Text style={styles.iconButtonText}>Add Files</Text>
-          </TouchableOpacity>
-        </View>
-
-        <TextInput
-          style={styles.notesInput}
-          placeholder="Add notes"
-          value={notes}
-          onChangeText={setNotes}
-          multiline
-        />
-      </View>
-
-      {/* Add Warranty Button */}
-      <TouchableOpacity style={styles.addButton}>
-        <Text style={styles.addButtonText}>Add Warranty</Text>
-      </TouchableOpacity>
+        {/* Add Warranty Button */}
+        <TouchableOpacity style={styles.addButton}>
+          <Text style={styles.addButtonText}>Add Warranty</Text>
+        </TouchableOpacity>
+      </ScrollView>
 
       {/* Bottom Navigation */}
       <View style={styles.bottomNav}>
@@ -147,7 +155,7 @@ export default function AddWarranty() {
           <Text style={styles.navText}>Home</Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+    </>
   );
 }
 
@@ -161,11 +169,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingHorizontal: 16,
   },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  headerIcon: {},
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    fontFamily: 'InriaSerif-Bold',
-    marginTop: 10,
+    fontSize: 30,
+    fontFamily: 'InriaSerif-Regular',
   },
   subtitle: {
     fontSize: 16,
@@ -177,13 +189,23 @@ const styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',
     marginVertical: 20,
+    marginLeft: 20,
+    width: 390,
+    height: 150,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+    justifyContent: 'center',
   },
   image: {
-    width: 250,
+    width: 390,
     height: 150,
     resizeMode: 'contain',
     backgroundColor: '#FFF',
-    borderRadius: 10,
+    borderRadius: 15,
   },
   inputContainer: {
     paddingHorizontal: 16,
@@ -202,6 +224,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
   },
+  notesInput: {
+    flex: 100,
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    padding: 12,
+    fontSize: 14,
+    color: '#333',
+    textAlignVertical: 'top',
+    marginRight: 5,
+    marginLeft: 5,
+    minHeight: 80,
+  },
   iconButton: {
     flex: 1,
     flexDirection: 'row',
@@ -216,14 +250,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 14,
     color: '#555',
-  },
-  notesInput: {
-    backgroundColor: '#FFF',
-    borderRadius: 10,
-    padding: 12,
-    marginTop: 10,
-    minHeight: 80,
-    textAlignVertical: 'top',
   },
   addButton: {
     backgroundColor: '#7E8FA6',
@@ -241,10 +267,14 @@ const styles = StyleSheet.create({
   bottomNav: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
     backgroundColor: '#FFF',
     paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: '#DDD',
+    position: 'absolute',
+    bottom: 0, // Ensure it's at the bottom of the screen
   },
   navButton: {
     alignItems: 'center',
