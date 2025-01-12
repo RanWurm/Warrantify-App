@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     height: 150,
     resizeMode: 'contain',
     marginBottom: 10,
+	marginTop:40,
   },
   title: {
     fontSize: 30,
@@ -112,9 +113,10 @@ const styles = StyleSheet.create({
   grid: {
     alignItems: 'center',
     paddingBottom: 100,
+	marginTop: 20,
   },
   categoryContainer: {
-    margin: 10,
+    margin: 20,
     alignItems: 'center',
     borderRadius: 12,
     backgroundColor: '#E8E8E8',
@@ -158,6 +160,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: 'center',
     width: '80%',
+	marginBottom: 20,
   },
   addButtonText: {
     color: '#fff',
@@ -168,7 +171,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
-    backgroundColor: '#FFF',
+    backgroundColor: '#D2BBA1',
     paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: '#DDD',
