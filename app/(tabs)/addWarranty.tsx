@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker
 import { Ionicons } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
 
@@ -21,6 +22,18 @@ export default function AddWarranty() {
   const [purchaseDate, setPurchaseDate] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [notes, setNotes] = useState('');
+  const [showPurchaseDatePicker, setShowPurchaseDatePicker] = useState(false);
+  const [showExpirationDatePicker, setShowExpirationDatePicker] = useState(false);
+
+  // Handle Date Selection
+  const handleDateChange = (event, selectedDate, setDate, closePicker) => {
+    if (event.type === 'set') {
+      // If "OK" is pressed
+      const formattedDate = selectedDate.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+      setDate(formattedDate);
+    }
+    closePicker(false); // Close the date picker
+  };
 
   return (
     <>
@@ -95,31 +108,50 @@ export default function AddWarranty() {
             />
           </View>
 
+          {/* Purchase Date and Expiration Date */}
           <View style={styles.row}>
-            <TextInput
-              style={styles.input}
-              placeholder="Purchase date"
-              value={purchaseDate}
-              onChangeText={setPurchaseDate}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Expiration date"
-              value={expirationDate}
-              onChangeText={setExpirationDate}
-            />
+            <TouchableOpacity
+              style={styles.dateInput}
+              onPress={() => setShowPurchaseDatePicker(true)}
+            >
+              <Ionicons name="calendar-outline" size={24} color="#555" style={styles.calendarIcon} />
+              <Text style={styles.dateText}>
+                {purchaseDate || 'Purchase Date'}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.dateInput}
+              onPress={() => setShowExpirationDatePicker(true)}
+            >
+              <Ionicons name="calendar-outline" size={24} color="#555" style={styles.calendarIcon} />
+              <Text style={styles.dateText}>
+                {expirationDate || 'Expiration Date'}
+              </Text>
+            </TouchableOpacity>
           </View>
 
-          <View style={styles.row}>
-            <TouchableOpacity style={styles.iconButton}>
-              <Ionicons name="scan-outline" size={24} color="#555" />
-              <Text style={styles.iconButtonText}>Scan Receipt</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton}>
-              <Ionicons name="add-outline" size={24} color="#555" />
-              <Text style={styles.iconButtonText}>Add Files</Text>
-            </TouchableOpacity>
-          </View>
+          {showPurchaseDatePicker && (
+            <DateTimePicker
+              value={new Date()}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) =>
+                handleDateChange(event, selectedDate, setPurchaseDate, setShowPurchaseDatePicker)
+              }
+            />
+          )}
+
+          {showExpirationDatePicker && (
+            <DateTimePicker
+              value={new Date()}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) =>
+                handleDateChange(event, selectedDate, setExpirationDate, setShowExpirationDatePicker)
+              }
+            />
+          )}
 
           <TextInput
             style={styles.notesInput}
@@ -174,7 +206,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
-  headerIcon: {},
   title: {
     fontSize: 30,
     fontFamily: 'InriaSerif-Regular',
@@ -187,25 +218,25 @@ const styles = StyleSheet.create({
     fontFamily: 'InriaSerif-Regular',
   },
   imageContainer: {
-    alignItems: 'center',
+    alignSelf: 'center', // Center the image horizontally
     marginVertical: 20,
-    marginLeft: 20,
-    width: 390,
-    height: 150,
+    width: 300,
+    height: 200,
     borderRadius: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 5 }, // Center shadow
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 10, // For Android shadow
     justifyContent: 'center',
+    alignItems: 'center',
   },
   image: {
-    width: 390,
-    height: 150,
+    width: '100%',
+    height: '100%',
     resizeMode: 'contain',
-    backgroundColor: '#FFF',
     borderRadius: 15,
+    backgroundColor: '#FFF',
   },
   inputContainer: {
     paddingHorizontal: 16,
@@ -224,32 +255,31 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
   },
+  dateInput: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    padding: 12,
+    marginHorizontal: 5,
+  },
+  calendarIcon: {
+    marginRight: 8,
+  },
+  dateText: {
+    fontSize: 14,
+    color: '#333',
+  },
   notesInput: {
-    flex: 100,
     backgroundColor: '#FFF',
     borderRadius: 10,
     padding: 12,
     fontSize: 14,
     color: '#333',
     textAlignVertical: 'top',
-    marginRight: 5,
-    marginLeft: 5,
-    minHeight: 80,
-  },
-  iconButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFF',
-    borderRadius: 10,
-    padding: 10,
     marginHorizontal: 5,
-  },
-  iconButtonText: {
-    marginLeft: 8,
-    fontSize: 14,
-    color: '#555',
+    minHeight: 80,
   },
   addButton: {
     backgroundColor: '#7E8FA6',
@@ -274,7 +304,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#DDD',
     position: 'absolute',
-    bottom: 0, // Ensure it's at the bottom of the screen
+    bottom: 0,
   },
   navButton: {
     alignItems: 'center',
