@@ -1,8 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useFonts } from 'expo-font';
+
 
 export default function HomeScreen() {
+	const [fontsLoaded] = useFonts({
+		'InriaSerif-Regular': require('../../assets/fonts/InriaSerif-Regular.ttf'),
+		'InriaSerif-Bold': require('../../assets/fonts/InriaSerif-Bold.ttf'),
+	  });
+	
+	  if (!fontsLoaded) {
+		return null; // Render nothing while fonts are loading
+	  }
+
   const categories = [
     { id: '1', name: 'Computer', icon: 'desktop-outline' },
     { id: '2', name: 'Laptop', icon: 'laptop-outline' },
@@ -30,6 +41,9 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Logo */}
+	  <Image source={require('../../assets/images/warrantylogo.png')} style={styles.logo} />
+
       {/* Title and Subtitle */}
       <Text style={styles.title}>Warrantify</Text>
       <Text style={styles.subtitle}>Warranty Management App</Text>
@@ -78,15 +92,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
+  logo: {
+    width: 150,
+    height: 150,
+    resizeMode: 'contain', // Ensures the image scales properly
+    marginBottom: 10,
+  },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
-    marginTop: 20,
+    marginTop: 0,
+	fontFamily: 'InriaSerif-Bold', // Use the custom font
+
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 20,
     color: '#666',
     marginBottom: 20,
+	fontFamily: 'InriaSerif-Regular', // Use the custom font
+
   },
   grid: {
     alignItems: 'center',
@@ -125,6 +149,7 @@ const styles = StyleSheet.create({
   labelText: {
     fontSize: 14,
     fontWeight: '500',
+	fontFamily: 'InriaSerif-Bold', // Use the custom font
     color: '#000',
   },
   addButton: {
