@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function HomeScreen() {
@@ -16,17 +16,25 @@ export default function HomeScreen() {
   ];
 
   const renderCategory = ({ item }) => (
-    <TouchableOpacity style={styles.category}>
-      <Ionicons name={item.icon} size={36} color="#333" />
-      <Text style={styles.categoryText}>{item.name}</Text>
-    </TouchableOpacity>
+    <View style={styles.categoryContainer}>
+      {/* Icon Section */}
+      <View style={styles.iconContainer}>
+        <Ionicons name={item.icon} size={36} color="#000" />
+      </View>
+      {/* Label Section */}
+      <View style={styles.labelContainer}>
+        <Text style={styles.labelText}>{item.name}</Text>
+      </View>
+    </View>
   );
 
   return (
     <View style={styles.container}>
+      {/* Title and Subtitle */}
       <Text style={styles.title}>Warrantify</Text>
       <Text style={styles.subtitle}>Warranty Management App</Text>
 
+      {/* Grid of Categories */}
       <FlatList
         data={categories}
         keyExtractor={(item) => item.id}
@@ -35,10 +43,12 @@ export default function HomeScreen() {
         contentContainerStyle={styles.grid}
       />
 
+      {/* Add Warranty Button */}
       <TouchableOpacity style={styles.addButton}>
         <Text style={styles.addButtonText}>Add Warranty</Text>
       </TouchableOpacity>
 
+      {/* Bottom Navigation Menu */}
       <View style={styles.bottomNav}>
         <TouchableOpacity style={styles.navButton}>
           <Ionicons name="construct-outline" size={24} color="#555" />
@@ -62,17 +72,26 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#D2BBA1', alignItems: 'center', padding: 16 },
-  title: { fontSize: 24, fontWeight: 'bold', marginTop: 20 },
-  subtitle: { fontSize: 16, color: '#666', marginBottom: 20 },
-  grid: { alignItems: 'center' },
-  category: { alignItems: 'center', margin: 10, width: 80, height: 100 },
-  categoryText: { marginTop: 8, fontSize: 14, color: '#333', textAlign: 'center' },
-  addButton: { marginTop: 20, backgroundColor: '#0077E6', padding: 12, borderRadius: 8, alignItems: 'center', width: '80%' },
-  addButtonText: { color: '#fff', fontSize: 16 },
-  bottomNav: { flexDirection: 'row', justifyContent: 'space-around', width: '100%', backgroundColor: '#fff', paddingVertical: 10, borderTopWidth: 1, borderTopColor: '#ddd' },
-  navButton: { alignItems: 'center' },
-  navText: { fontSize: 12, color: '#555' },
+  container: {
+    flex: 1,
+    backgroundColor: '#D2BBA1', // Beige background
+    alignItems: 'center',
+    padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 20,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 20,
+  },
+  grid: {
+    alignItems: 'center',
+    paddingBottom: 100, // Ensure space for "Add Warranty" button
+  },
   categoryContainer: {
     margin: 10,
     alignItems: 'center',
@@ -90,7 +109,6 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
     backgroundColor: '#E8E8E8',
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
@@ -109,6 +127,37 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#000',
   },
-}
-);
-
+  addButton: {
+    position: 'absolute',
+    bottom: 70, // Positioned above the bottom navigation
+    alignSelf: 'center',
+    backgroundColor: '#7E8FA6', // Matching the "Add Warranty" button color
+    padding: 12,
+    borderRadius: 24,
+    alignItems: 'center',
+    width: '80%',
+  },
+  addButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  bottomNav: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    backgroundColor: '#FFF',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#DDD',
+    position: 'absolute',
+    bottom: 0,
+  },
+  navButton: {
+    alignItems: 'center',
+  },
+  navText: {
+    fontSize: 12,
+    color: '#555',
+  },
+});
