@@ -1,5 +1,28 @@
+// app/(tabs)/index.tsx
+import React, { useEffect, useState } from 'react';
 import { Redirect } from 'expo-router';
+import { auth } from '../../constants/firebase'; 
+import { onAuthStateChanged, User } from 'firebase/auth';
 
 export default function Index() {
-  return <Redirect href="/profile" />;
+  const [loading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) {
+    return null; // or splash screen
+  }
+
+  if (currentUser) {
+    return <Redirect href="/homeScreen" />;
+  } else {
+    return <Redirect href="/login" />;
+  }
 }

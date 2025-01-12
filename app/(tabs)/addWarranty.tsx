@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Alert,
 } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker
 import { Ionicons } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
 
@@ -22,17 +22,27 @@ export default function AddWarranty() {
   const [purchaseDate, setPurchaseDate] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [notes, setNotes] = useState('');
-  const [showPurchaseDatePicker, setShowPurchaseDatePicker] = useState(false);
-  const [showExpirationDatePicker, setShowExpirationDatePicker] = useState(false);
 
-  // Handle Date Selection
-  const handleDateChange = (event, selectedDate, setDate, closePicker) => {
-    if (event.type === 'set') {
-      // If "OK" is pressed
-      const formattedDate = selectedDate.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
-      setDate(formattedDate);
+  // Optional: Function to validate date format (YYYY-MM-DD)
+  const validateDate = (date: string) => {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    return regex.test(date);
+  };
+
+  // Optional: Handle form submission
+  const handleAddWarranty = () => {
+    if (!validateDate(purchaseDate) || !validateDate(expirationDate)) {
+      Alert.alert(
+        'Invalid Date Format',
+        'Please enter dates in YYYY-MM-DD format.'
+      );
+      return;
     }
-    closePicker(false); // Close the date picker
+
+    // Proceed with adding the warranty
+    // Example: Save to database or state management
+    Alert.alert('Success', 'Warranty added successfully!');
+    // Reset form fields if needed
   };
 
   return (
@@ -110,48 +120,21 @@ export default function AddWarranty() {
 
           {/* Purchase Date and Expiration Date */}
           <View style={styles.row}>
-            <TouchableOpacity
+            <TextInput
               style={styles.dateInput}
-              onPress={() => setShowPurchaseDatePicker(true)}
-            >
-              <Ionicons name="calendar-outline" size={24} color="#555" style={styles.calendarIcon} />
-              <Text style={styles.dateText}>
-                {purchaseDate || 'Purchase Date'}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
+              placeholder="Purchase Date (YYYY-MM-DD)"
+              value={purchaseDate}
+              onChangeText={setPurchaseDate}
+              keyboardType="numeric"
+            />
+            <TextInput
               style={styles.dateInput}
-              onPress={() => setShowExpirationDatePicker(true)}
-            >
-              <Ionicons name="calendar-outline" size={24} color="#555" style={styles.calendarIcon} />
-              <Text style={styles.dateText}>
-                {expirationDate || 'Expiration Date'}
-              </Text>
-            </TouchableOpacity>
+              placeholder="Expiration Date (YYYY-MM-DD)"
+              value={expirationDate}
+              onChangeText={setExpirationDate}
+              keyboardType="numeric"
+            />
           </View>
-
-          {showPurchaseDatePicker && (
-            <DateTimePicker
-              value={new Date()}
-              mode="date"
-              display="default"
-              onChange={(event, selectedDate) =>
-                handleDateChange(event, selectedDate, setPurchaseDate, setShowPurchaseDatePicker)
-              }
-            />
-          )}
-
-          {showExpirationDatePicker && (
-            <DateTimePicker
-              value={new Date()}
-              mode="date"
-              display="default"
-              onChange={(event, selectedDate) =>
-                handleDateChange(event, selectedDate, setExpirationDate, setShowExpirationDatePicker)
-              }
-            />
-          )}
 
           <TextInput
             style={styles.notesInput}
@@ -163,7 +146,7 @@ export default function AddWarranty() {
         </View>
 
         {/* Add Warranty Button */}
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity style={styles.addButton} onPress={handleAddWarranty}>
           <Text style={styles.addButtonText}>Add Warranty</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -257,17 +240,10 @@ const styles = StyleSheet.create({
   },
   dateInput: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
     backgroundColor: '#FFF',
     borderRadius: 10,
     padding: 12,
     marginHorizontal: 5,
-  },
-  calendarIcon: {
-    marginRight: 8,
-  },
-  dateText: {
     fontSize: 14,
     color: '#333',
   },

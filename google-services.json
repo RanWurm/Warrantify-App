@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "841468913822",
+    "project_id": "warrantify-86d1a",
+    "storage_bucket": "warrantify-86d1a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841468913822:android:edc4c95618c50458b8338f",
+        "android_client_info": {
+          "package_name": "com.ranwurm.Warrantify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm1NKQ4oIcBJflbQERltPYcGlEMz71yLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

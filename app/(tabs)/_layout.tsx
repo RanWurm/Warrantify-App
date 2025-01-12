@@ -1,41 +1,52 @@
+// app/(tabs)/_layout.tsx
 import { Stack } from 'expo-router';
-import { useColorScheme } from 'react-native';
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  
+export default function TabsLayout() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: {
-          backgroundColor: colorScheme === 'dark' ? '#1b1b1b' : '#F5F5F5',
+        headerStyle: { 
+          backgroundColor: '#1e1e2f', // A modern dark tone for the header
+          shadowColor: 'transparent', // Remove shadow for a cleaner look
         },
-        headerTintColor: colorScheme === 'dark' ? '#fff' : '#333',
+        headerTintColor: '#ffffff', // White text/icons for good contrast
+        headerTitleStyle: {
+          fontWeight: 'bold', // Bold titles for emphasis
+          fontSize: 18, // Slightly larger font for readability
+        },
+        headerBackTitleVisible: false, // Hide the back title for cleaner navigation
+        title: 'Login',
+        headerShown: false, 
       }}
     >
       <Stack.Screen
-        name="index"
-        options={{
-          headerShown: false,
+        name="index" // Main entry point
+        options={{ 
+          title: 'Home',
+          headerStyle: { backgroundColor: '#4a90e2' }, // Unique color for Home
+          headerLeft: () => null, // Remove back button
         }}
       />
-      
       <Stack.Screen
-        name="home"
-        options={{
-          title: 'Warrantify',
-          headerLargeTitle: true,
-          headerStyle: {
-            backgroundColor: 'transparent',
-          },
-          headerShadowVisible: false,
+        name="explore"
+        options={{ 
+          title: 'Explore',
+          headerStyle: { backgroundColor: '#34c759' }, // Green for exploration vibe
         }}
       />
-      
       <Stack.Screen
         name="login"
         options={{
-          headerShown: false,
+          title: 'Login',
+          headerShown: false, // Full custom layout for Login
+        }}
+      />
+      <Stack.Screen
+        name="profile"
+        options={{ 
+          title: 'Profile',
+          headerStyle: { backgroundColor: '#5856d6' }, // Calming blue-purple tone
+          headerLeft: () => null, // Remove back button
         }}
       />
     </Stack>
