@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Modal,
+  TextInput,
+  Image,
   SafeAreaView,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import BottomNavBar from '../components/BottomNavBar';
 
+// WarrantyItem Component
 const WarrantyItem = ({ title, subtitle, date, timeAgo, iconName }) => (
   <View style={styles.warrantyItem}>
     <MaterialCommunityIcons name={iconName} size={32} color="#7E8FA6" style={styles.icon} />
@@ -26,9 +27,6 @@ const WarrantyItem = ({ title, subtitle, date, timeAgo, iconName }) => (
 );
 
 const WarrantyProfile = () => {
-  const [isModalVisible, setModalVisible] = useState(false);
-
-
   const warranties = [
     {
       title: 'Ipad',
@@ -67,156 +65,204 @@ const WarrantyProfile = () => {
     },
   ];
 
-  const toggleModal = () => setModalVisible(!isModalVisible);
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.contentContainer}>
-        <View style={styles.header}>
-          <View style={styles.profilePicPlaceholder} />
-          <View style={styles.ratings}>
-            <Text style={styles.ratingText}>My Ratings</Text>
-            <View style={styles.ratingBars}>
-              <Text style={styles.ratingPercentage}>30% Expired</Text>
-              <Text style={styles.ratingPercentage}>65% In Progress</Text>
-              <Text style={styles.ratingPercentage}>5% Recent</Text>
+      {/* Header Section */}
+      <View style={styles.header}>
+        <Text style={styles.title}>My Warranties</Text>
+        <View style={styles.profileContainer}>
+          <Image
+            source={require('../../assets/images/profile-picture.jpg')} // Replace with your image path
+            style={styles.profileImage}
+          />
+          <View style={styles.progressTextContainer}>
+            <Text style={styles.boldText}>30% Expired</Text>
+            <Text style={styles.boldText}>65% In Progress</Text>
+            <Text style={styles.boldText}>5% Recent</Text>
+            <Text style={styles.subText}>My Ratings</Text>
+            <View style={styles.ratingStars}>
+              <MaterialCommunityIcons name="star" size={16} color="#C6A992" />
+              <MaterialCommunityIcons name="star" size={16} color="#C6A992" />
+              <MaterialCommunityIcons name="star" size={16} color="#C6A992" />
+              <MaterialCommunityIcons name="star-outline" size={16} color="#C6A992" />
+              <MaterialCommunityIcons name="star-outline" size={16} color="#C6A992" />
             </View>
-            <View style={styles.progressCircle}>
-              <Text style={styles.progressText}>65%</Text>
+          </View>
+          <View style={styles.progressCircle}>
+            <View style={styles.progressCircleInner}>
+              <Text style={styles.progressCircleText}>65%</Text>
             </View>
           </View>
         </View>
-
-        <View style={styles.searchBar}>
-          <TouchableOpacity style={styles.filterButton}>
-            <MaterialCommunityIcons name="filter-variant" size={20} color="#fff" />
-            <Text style={styles.buttonText}>All Warranties</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.searchButton}>
-            <MaterialCommunityIcons name="magnify" size={20} color="#fff" />
-            <Text style={styles.buttonText}>Search</Text>
-          </TouchableOpacity>
-        </View>
-
-        <ScrollView style={styles.warrantyList}>
-          {warranties.map((warranty, index) => (
-            <WarrantyItem key={index} {...warranty} />
-          ))}
-          <View style={styles.bottomPadding} />
-        </ScrollView>
-
-        <TouchableOpacity style={styles.addButton} onPress={toggleModal}>
-          <Text style={styles.addButtonText}>Add Warranty</Text>
-        </TouchableOpacity>
       </View>
 
-      <Modal visible={isModalVisible} animationType="fade" transparent>
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Add Warranty</Text>
-            <TouchableOpacity style={styles.modalOption} onPress={toggleModal}>
-              <MaterialCommunityIcons name="camera" size={24} color="#fff" />
-              <Text style={styles.modalOptionText}>Use Camera</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.modalOption} onPress={toggleModal}>
-              <MaterialCommunityIcons name="file-document-edit" size={24} color="#fff" />
-              <Text style={styles.modalOptionText}>Fill Manually</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
-              <Text style={styles.closeButtonText}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
+      {/* Search Bar */}
+      <View style={styles.searchBar}>
+        <TouchableOpacity style={styles.filterButton}>
+          <MaterialCommunityIcons name="tune" size={20} color="#000" />
+          <Text style={styles.filterButtonText}>All Warranties</Text>
+        </TouchableOpacity>
+        <View style={styles.searchInput}>
+          <TextInput
+            placeholder="Search here"
+            placeholderTextColor="#666"
+            style={styles.searchText}
+          />
+          <MaterialCommunityIcons name="magnify" size={20} color="#666" />
         </View>
-      </Modal>
+      </View>
 
-      <BottomNavBar />
+      {/* Warranties List */}
+      <ScrollView style={styles.warrantyList}>
+        {warranties.map((warranty, index) => (
+          <WarrantyItem key={index} {...warranty} />
+        ))}
+        <View style={styles.bottomPadding} />
+      </ScrollView>
+
+      {/* Add Warranty Button */}
+      <TouchableOpacity style={styles.addButton}>
+        <Text style={styles.addButtonText}>Add Warranty</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#D2BBA1',
-  },
-  contentContainer: {
-    flex: 1,
-    paddingBottom: 60,
+    backgroundColor: '#F5EFE6',
   },
   header: {
-    flexDirection: 'row',
     padding: 20,
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#F5EFE6',
+    borderBottomWidth: 1,
+    borderBottomColor: '#DDD',
+  },
+  title: {
+    fontSize: 35,
+    fontFamily: 'InriaSerif-Bold',
+    color: '#000',
+    textAlign: 'center',
+    marginBottom: 20,
+	marginTop: 10,
+  },
+  profileContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F5EFE6',
+    padding: 15,
     borderRadius: 15,
-    margin: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 4,
+    borderColor: '#7E8FA6',
+    borderWidth: 1,
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: '#DDD',
+  },
+  progressTextContainer: {
+    flex: 1,
+    marginHorizontal: 15,
     alignItems: 'center',
   },
-  profilePicPlaceholder: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#7E8FA6',
-  },
-  ratings: {
-    marginLeft: 15,
-    flex: 1,
-  },
-  ratingText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000',
-  },
-  ratingBars: {
-    marginTop: 10,
-  },
-  ratingPercentage: {
+  boldText: {
     fontSize: 14,
-    color: '#666',
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 5,
+	fontFamily: 'InriaSerif-Regular',
+
+  },
+  subText: {
+    fontSize: 12,
+    color: '#999',
+    marginTop: 10,
+	fontFamily: 'InriaSerif-Regular',
+
+  },
+  ratingStars: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 5,
   },
   progressCircle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#7E8FA6',
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: '#F5EFE6',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    right: 0,
+    borderWidth: 6,
+    borderColor: '#C6A992', // Nude color
+    position: 'relative',
   },
-  progressText: {
+  progressCircleInner: {
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    backgroundColor: '#FFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  progressCircleText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#333',
+	fontFamily: 'InriaSerif-Regular',
+
   },
   searchBar: {
     flexDirection: 'row',
-    padding: 10,
     justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 15,
+    marginHorizontal: 20,
+    marginVertical: 15,
   },
   filterButton: {
-    backgroundColor: '#7E8FA6',
-    padding: 10,
-    borderRadius: 20,
-    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#D2BBA1',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 10,
     marginRight: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  searchButton: {
-    backgroundColor: '#7E8FA6',
-    padding: 10,
-    borderRadius: 20,
-    flex: 1,
-    marginLeft: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: '#fff',
+  filterButtonText: {
+    fontSize: 14,
+    color: '#000',
     marginLeft: 5,
+	fontFamily: 'InriaSerif-Regular',
+
+  },
+  searchInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    backgroundColor: '#D2BBA1',
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+	fontFamily: 'InriaSerif-Regular',
+
+  },
+  searchText: {
+    flex: 1,
+    fontSize: 14,
+    color: '#000',
+    marginRight: 5,
+	fontFamily: 'InriaSerif-Regular',
+
   },
   warrantyList: {
     flex: 1,
@@ -224,7 +270,7 @@ const styles = StyleSheet.create({
   warrantyItem: {
     flexDirection: 'row',
     padding: 15,
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#FDFDFD',
     marginHorizontal: 10,
     marginVertical: 5,
     borderRadius: 12,
@@ -238,20 +284,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#000',
+	fontFamily: 'InriaSerif-Regular',
+
   },
   itemSubtitle: {
     color: '#666',
     marginTop: 5,
+	fontFamily: 'InriaSerif-Regular',
+
   },
   warrantyDates: {
     alignItems: 'flex-end',
+	fontFamily: 'InriaSerif-Regular',
+
   },
   dateText: {
     color: '#666',
+	fontFamily: 'InriaSerif-Regular',
+
   },
   timeAgoText: {
     color: '#7E8FA6',
     fontSize: 12,
+	fontFamily: 'InriaSerif-Regular',
+
   },
   bottomPadding: {
     height: 80,
@@ -267,56 +323,14 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     marginHorizontal: 20,
+	
   },
   addButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-  },
-  modalContent: {
-    width: '80%',
-    backgroundColor: '#E8E8E8',
-    padding: 20,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000',
-    marginBottom: 20,
-  },
-  modalOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    marginVertical: 10,
-    backgroundColor: '#7E8FA6',
-    borderRadius: 10,
-    width: '100%',
-  },
-  modalOptionText: {
-    fontSize: 16,
-    marginLeft: 10,
-    color: '#fff',
-  },
-  closeButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: '#D2BBA1',
-    borderRadius: 10,
-    width: '100%',
-    alignItems: 'center',
-  },
-  closeButtonText: {
-    fontSize: 16,
-    color: '#000',
+	fontFamily: 'InriaSerif-Regular',
+
   },
 });
 
