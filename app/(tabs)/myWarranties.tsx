@@ -59,7 +59,7 @@ const WarrantyItem = ({ title, subtitle, date, timeAgo, iconName, progress }) =>
   
   
 
-const WarrantyProfile = () => {
+const myWarranties = () => {
   const warranties = [
     {
       title: 'Ipad',
@@ -462,4 +462,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WarrantyProfile;
+export default myWarranties;
