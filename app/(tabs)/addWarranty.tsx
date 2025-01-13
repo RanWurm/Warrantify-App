@@ -23,13 +23,11 @@ export default function AddWarranty() {
   const [expirationDate, setExpirationDate] = useState('');
   const [notes, setNotes] = useState('');
 
-  // Optional: Function to validate date format (YYYY-MM-DD)
   const validateDate = (date: string) => {
     const regex = /^\d{4}-\d{2}-\d{2}$/;
     return regex.test(date);
   };
 
-  // Optional: Handle form submission
   const handleAddWarranty = () => {
     if (!validateDate(purchaseDate) || !validateDate(expirationDate)) {
       Alert.alert(
@@ -39,10 +37,7 @@ export default function AddWarranty() {
       return;
     }
 
-    // Proceed with adding the warranty
-    // Example: Save to database or state management
     Alert.alert('Success', 'Warranty added successfully!');
-    // Reset form fields if needed
   };
 
   return (
@@ -54,12 +49,14 @@ export default function AddWarranty() {
         {/* Header Section */}
         <View style={styles.header}>
           <View style={styles.headerRow}>
-            <Ionicons name="document-outline" size={70} color="#555" style={styles.headerIcon} />
-            <Text style={styles.title}>Add a warranty</Text>
+            <Ionicons name="document-outline" size={90} color="#555" style={styles.headerIcon} />
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>Add a warranty</Text>
+              <Text style={styles.subtitle}>
+                Keep track of all of your receipts simply and easily!
+              </Text>
+            </View>
           </View>
-          <Text style={styles.subtitle}>
-            Keep track of all of your receipts simply and easily!
-          </Text>
         </View>
 
         {/* Illustration */}
@@ -118,7 +115,6 @@ export default function AddWarranty() {
             />
           </View>
 
-          {/* Purchase Date and Expiration Date */}
           <View style={styles.row}>
             <TextInput
               style={styles.dateInput}
@@ -135,6 +131,27 @@ export default function AddWarranty() {
               keyboardType="numeric"
             />
           </View>
+
+		  <View style={styles.row}>
+			{/* Scan Receipt Button */}
+			<TouchableOpacity style={styles.iconButton}>
+				<Ionicons name="scan-outline" size={24} color="#555" />
+				<Text style={styles.iconButtonText}>Scan Receipt</Text>
+			</TouchableOpacity>
+
+			{/* Add Receipt Button */}
+			<TouchableOpacity style={styles.iconButton}>
+				<Ionicons name="add-outline" size={24} color="#555" />
+				<Text style={styles.iconButtonText}>Add Receipt</Text>
+			</TouchableOpacity>
+
+			{/* Add Files Button */}
+			<TouchableOpacity style={styles.iconButton}>
+				<Ionicons name="document-attach-outline" size={24} color="#555" />
+				<Text style={styles.iconButtonText}>Add Files</Text>
+			</TouchableOpacity>
+		 </View>
+
 
           <TextInput
             style={styles.notesInput}
@@ -180,39 +197,48 @@ const styles = StyleSheet.create({
     backgroundColor: '#D2BBA1',
   },
   header: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginTop: 20,
     paddingHorizontal: 16,
   },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+  },
+  headerIcon: {
+    marginRight: 10,
+	marginTop: 20,
+  },
+  titleContainer: {
+    flex: 1,
+	width: 250
   },
   title: {
     fontSize: 30,
     fontFamily: 'InriaSerif-Regular',
+    marginBottom: 4,
+	marginTop:35,
   },
   subtitle: {
     fontSize: 16,
     color: '#666',
-    textAlign: 'center',
-    marginVertical: 10,
+    textAlign: 'left',
     fontFamily: 'InriaSerif-Regular',
   },
   imageContainer: {
-    alignSelf: 'center', // Center the image horizontally
+    alignSelf: 'center',
     marginVertical: 20,
-    width: 300,
+    width: 400,
     height: 200,
     borderRadius: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 5 }, // Center shadow
+    shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
-    elevation: 10, // For Android shadow
+    elevation: 10,
     justifyContent: 'center',
     alignItems: 'center',
+	marginTop:20,
   },
   image: {
     width: '100%',
@@ -220,14 +246,31 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     borderRadius: 15,
     backgroundColor: '#FFF',
+	marginTop: 10,
   },
   inputContainer: {
     paddingHorizontal: 16,
+	borderColor:'#fff'
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
+  },
+  iconButton: {
+	flex: 1,
+	flexDirection: 'row',
+	alignItems: 'center',
+	justifyContent: 'center',
+	backgroundColor: '#FFF',
+	borderRadius: 10,
+	padding: 12,
+	marginHorizontal: 2, // Reduced spacing between buttons
+  },
+  iconButtonText: {
+	marginLeft: 8,
+	fontSize: 14,
+	color: '#555',
   },
   input: {
     flex: 1,
@@ -275,7 +318,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     width: '100%',
-    backgroundColor: '#FFF',
+    backgroundColor: '#D2BBA1',
     paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: '#DDD',
