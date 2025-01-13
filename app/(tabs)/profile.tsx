@@ -10,6 +10,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Svg, Circle } from 'react-native-svg';
 
 // WarrantyItem Component
 const WarrantyItem = ({ title, subtitle, date, timeAgo, iconName }) => (
@@ -89,6 +90,28 @@ const WarrantyProfile = () => {
             </View>
           </View>
           <View style={styles.progressCircle}>
+            <Svg width={70} height={70}>
+              <Circle
+                cx="35"
+                cy="35"
+                r="30"
+                stroke="#E8E8E8" // Light gray outer circle
+                strokeWidth="6"
+                fill="none"
+              />
+              <Circle
+                cx="35"
+                cy="35"
+                r="30"
+                stroke="#C6A992" // Nude color
+                strokeWidth="6"
+                strokeDasharray="188" // Circumference of the circle
+                strokeDashoffset="47" // 3/4 progress (25% remaining)
+                strokeLinecap="round"
+                fill="none"
+                transform="rotate(-90, 35, 35)" // Rotate to start at top
+              />
+            </Svg>
             <View style={styles.progressCircleInner}>
               <Text style={styles.progressCircleText}>65%</Text>
             </View>
@@ -145,7 +168,7 @@ const styles = StyleSheet.create({
     color: '#000',
     textAlign: 'center',
     marginBottom: 20,
-	marginTop: 10,
+    marginTop: 10,
   },
   profileContainer: {
     flexDirection: 'row',
@@ -178,15 +201,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 5,
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   subText: {
     fontSize: 12,
     color: '#999',
     marginTop: 10,
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   ratingStars: {
     flexDirection: 'row',
@@ -194,17 +215,12 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   progressCircle: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: '#F5EFE6',
+    position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 6,
-    borderColor: '#C6A992', // Nude color
-    position: 'relative',
   },
   progressCircleInner: {
+    position: 'absolute',
     width: 58,
     height: 58,
     borderRadius: 29,
@@ -216,8 +232,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   searchBar: {
     flexDirection: 'row',
@@ -242,8 +257,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
     marginLeft: 5,
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   searchInput: {
     flexDirection: 'row',
@@ -253,16 +267,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 15,
     paddingVertical: 10,
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   searchText: {
     flex: 1,
     fontSize: 14,
     color: '#000',
     marginRight: 5,
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   warrantyList: {
     flex: 1,
@@ -284,30 +296,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#000',
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   itemSubtitle: {
     color: '#666',
     marginTop: 5,
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   warrantyDates: {
     alignItems: 'flex-end',
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   dateText: {
     color: '#666',
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   timeAgoText: {
     color: '#7E8FA6',
     fontSize: 12,
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   bottomPadding: {
     height: 80,
@@ -323,14 +330,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     marginHorizontal: 20,
-	
   },
   addButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
 });
 
