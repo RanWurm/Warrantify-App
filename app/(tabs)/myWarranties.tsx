@@ -222,7 +222,7 @@ const myWarranties = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5EFE6',
+    backgroundColor: '#E9E0D4',
   },
   header: {
     padding: 20,
@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     width: '100%',
-    backgroundColor: '#D2BBA1',
+    backgroundColor: '#E9E0D4',
     paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: '#DDD',

@@ -87,7 +87,7 @@ export default function home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#D2BBA1',
+    backgroundColor: '#E9E0D4',
     alignItems: 'center',
     padding: 16,
   },
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
-    backgroundColor: '#D2BBA1',
+    backgroundColor: '#E9E0D4',
     paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: '#DDD',
