@@ -10,15 +10,25 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as Progress from 'react-native-progress'; // Import progress library
 import { Svg, Circle } from 'react-native-svg';
 
 // WarrantyItem Component
-const WarrantyItem = ({ title, subtitle, date, timeAgo, iconName }) => (
+const WarrantyItem = ({ title, subtitle, date, timeAgo, iconName, progress }) => (
   <View style={styles.warrantyItem}>
     <MaterialCommunityIcons name={iconName} size={32} color="#7E8FA6" style={styles.icon} />
     <View style={styles.warrantyInfo}>
       <Text style={styles.itemTitle}>{title}</Text>
       <Text style={styles.itemSubtitle}>{subtitle}</Text>
+      <Progress.Bar
+        progress={progress}
+        width={150}
+        color="#7E8FA6"
+        unfilledColor="#E8E8E8"
+        borderWidth={0}
+        height={8}
+        style={styles.progressBar}
+      />
     </View>
     <View style={styles.warrantyDates}>
       <Text style={styles.dateText}>{date}</Text>
@@ -35,6 +45,7 @@ const WarrantyProfile = () => {
       date: '14/05/2025',
       timeAgo: 'in 3 months',
       iconName: 'tablet',
+      progress: 0.75, // 75% progress
     },
     {
       title: 'Headphones',
@@ -42,6 +53,7 @@ const WarrantyProfile = () => {
       date: '16/08/2025',
       timeAgo: 'in 9 months',
       iconName: 'headphones',
+      progress: 0.10, // 10% progress
     },
     {
       title: 'Earphones',
@@ -49,6 +61,7 @@ const WarrantyProfile = () => {
       date: '04/02/2024',
       timeAgo: '1 year ago',
       iconName: 'earbuds',
+      progress: 1.0, // Expired
     },
     {
       title: 'Laptop',
@@ -56,6 +69,7 @@ const WarrantyProfile = () => {
       date: '25/05/2025',
       timeAgo: '5 months ago',
       iconName: 'laptop',
+      progress: 0.50, // 50% progress
     },
     {
       title: 'Hair Dryer',
@@ -63,6 +77,7 @@ const WarrantyProfile = () => {
       date: '20/01/2025',
       timeAgo: 'in one month',
       iconName: 'hair-dryer',
+      progress: 0.90, // 90% progress
     },
   ];
 
@@ -106,7 +121,7 @@ const WarrantyProfile = () => {
                 cx="35"
                 cy="35"
                 r="30"
-                stroke="#E8E8E8" // Light gray outer circle
+                stroke="#E8E8E8"
                 strokeWidth="6"
                 fill="none"
               />
@@ -114,13 +129,13 @@ const WarrantyProfile = () => {
                 cx="35"
                 cy="35"
                 r="30"
-                stroke="#C6A992" // Nude color
+                stroke="#C6A992"
                 strokeWidth="6"
-                strokeDasharray="188" // Circumference of the circle
-                strokeDashoffset="47" // 3/4 progress (25% remaining)
+                strokeDasharray="188"
+                strokeDashoffset="47"
                 strokeLinecap="round"
                 fill="none"
-                transform="rotate(-90, 35, 35)" // Rotate to start at top
+                transform="rotate(-90, 35, 35)"
               />
             </Svg>
             <View style={styles.progressCircleInner}>
@@ -220,17 +235,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#000',
-    fontFamily: 'InriaSerif-Regular',
   },
   statText: {
     fontSize: 12,
     color: '#999',
-    fontFamily: 'InriaSerif-Regular',
   },
   subText: {
     fontSize: 12,
     color: '#999',
-    fontFamily: 'InriaSerif-Regular',
   },
   ratingStars: {
     flexDirection: 'row',
@@ -255,7 +267,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
-    fontFamily: 'InriaSerif-Regular',
   },
   searchBar: {
     flexDirection: 'row',
@@ -280,7 +291,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
     marginLeft: 5,
-    fontFamily: 'InriaSerif-Regular',
   },
   searchInput: {
     flexDirection: 'row',
@@ -290,14 +300,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    fontFamily: 'InriaSerif-Regular',
   },
   searchText: {
     flex: 1,
     fontSize: 14,
     color: '#000',
     marginRight: 5,
-    fontFamily: 'InriaSerif-Regular',
   },
   warrantyList: {
     flex: 1,
@@ -319,25 +327,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#000',
-    fontFamily: 'InriaSerif-Regular',
   },
   itemSubtitle: {
     color: '#666',
     marginTop: 5,
-    fontFamily: 'InriaSerif-Regular',
   },
   warrantyDates: {
     alignItems: 'flex-end',
-    fontFamily: 'InriaSerif-Regular',
   },
   dateText: {
     color: '#666',
-    fontFamily: 'InriaSerif-Regular',
   },
   timeAgoText: {
     color: '#7E8FA6',
     fontSize: 12,
-    fontFamily: 'InriaSerif-Regular',
+  },
+  progressBar: {
+    marginTop: 5,
+    borderRadius: 5,
   },
   bottomPadding: {
     height: 80,
@@ -358,7 +365,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: 'InriaSerif-Regular',
   },
 });
 
