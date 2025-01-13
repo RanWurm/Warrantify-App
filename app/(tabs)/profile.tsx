@@ -77,9 +77,20 @@ const WarrantyProfile = () => {
             style={styles.profileImage}
           />
           <View style={styles.progressTextContainer}>
-            <Text style={styles.boldText}>30% Expired</Text>
-            <Text style={styles.boldText}>65% In Progress</Text>
-            <Text style={styles.boldText}>5% Recent</Text>
+            <View style={styles.progressStats}>
+              <View style={styles.progressStatItem}>
+                <Text style={styles.boldPercentage}>30%</Text>
+                <Text style={styles.statText}>Expired</Text>
+              </View>
+              <View style={styles.progressStatItem}>
+                <Text style={styles.boldPercentage}>65%</Text>
+                <Text style={styles.statText}>In Progress</Text>
+              </View>
+              <View style={styles.progressStatItem}>
+                <Text style={styles.boldPercentage}>5%</Text>
+                <Text style={styles.statText}>Recent</Text>
+              </View>
+            </View>
             <Text style={styles.subText}>My Ratings</Text>
             <View style={styles.ratingStars}>
               <MaterialCommunityIcons name="star" size={16} color="#C6A992" />
@@ -196,17 +207,29 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     alignItems: 'center',
   },
-  boldText: {
-    fontSize: 14,
+  progressStats: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 10,
+  },
+  progressStatItem: {
+    alignItems: 'center',
+  },
+  boldPercentage: {
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 5,
+    color: '#000',
+    fontFamily: 'InriaSerif-Regular',
+  },
+  statText: {
+    fontSize: 12,
+    color: '#999',
     fontFamily: 'InriaSerif-Regular',
   },
   subText: {
     fontSize: 12,
     color: '#999',
-    marginTop: 10,
     fontFamily: 'InriaSerif-Regular',
   },
   ratingStars: {
