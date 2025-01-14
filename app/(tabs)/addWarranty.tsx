@@ -194,7 +194,7 @@ export default function AddWarranty() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E9E0D4',
+    backgroundColor: '#D2BBA1',
   },
   header: {
     alignItems: 'flex-start',
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     width: '100%',
-    backgroundColor: '#E9E0D4',
+    backgroundColor: '#D2BBA1',
     paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: '#DDD',

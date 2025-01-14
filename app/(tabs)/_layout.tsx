@@ -6,49 +6,51 @@ export default function TabsLayout() {
     <Stack
       screenOptions={{
         headerStyle: { 
-          backgroundColor: '#1e1e2f', // A modern dark tone for the header
+          backgroundColor: '#1e1e2f', // Consistent dark theme for the header
           shadowColor: 'transparent', // Remove shadow for a cleaner look
         },
-        headerTintColor: '#ffffff', // White text/icons for good contrast
+        headerTintColor: '#ffffff', // White text/icons for contrast
         headerTitleStyle: {
-          fontWeight: 'bold', // Bold titles for emphasis
-          fontSize: 18, // Slightly larger font for readability
+          fontWeight: 'bold',
+          fontSize: 18,
         },
-        headerBackTitleVisible: false, // Hide the back title for cleaner navigation
-        title: 'Login',
-        headerShown: false, 
+        headerBackTitleVisible: false, // Cleaner navigation without back title
       }}
     >
       <Stack.Screen
-        name="index" // Main entry point
-        options={{ 
+        name="index"
+        options={{
           title: 'Home',
-          headerStyle: { backgroundColor: '#4a90e2' }, // Unique color for Home
-          headerLeft: () => null, // Remove back button
-        }}
-      />
-      <Stack.Screen
-        name="explore"
-        options={{ 
-          title: 'Explore',
-          headerStyle: { backgroundColor: '#34c759' }, // Green for exploration vibe
+          headerStyle: { backgroundColor: '#4a90e2' }, // Specific style for Home
+          headerLeft: null, // Remove back button for the root screen
         }}
       />
       <Stack.Screen
         name="login"
         options={{
           title: 'Login',
-          headerShown: false, // Full custom layout for Login
+          headerShown: false, // Hides the header for Login screen
         }}
       />
       <Stack.Screen
-        name="profile"
-        options={{ 
-          title: 'Profile',
-          headerStyle: { backgroundColor: '#5856d6' }, // Calming blue-purple tone
-          headerLeft: () => null, // Remove back button
+        name="myWarranties"
+        options={{
+          title: 'My Warranties',
+          headerStyle: { backgroundColor: '#5856d6' }, // Unique color for My Warranties
+          headerLeft: null,
+          headerShown: false, // Disable back button for My Warranties
         }}
       />
+      <Stack.Screen
+        name="recommended"
+        options={{
+          title: 'recommended',
+          headerStyle: { backgroundColor: '#5856d6' }, // Unique color for My Warranties
+          headerLeft: null,
+          headerShown: false, // Disable back button for My Warranties
+        }}
+      />
+      
     </Stack>
   );
 }

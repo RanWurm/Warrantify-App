@@ -63,18 +63,18 @@ const BottomNavBar = () => {
 
       <TouchableOpacity 
         style={styles.navButton}
-        onPress={() => navigateTo('/profile')}
+        onPress={() => navigateTo('/myWarranties')}
       >
         <MaterialCommunityIcons
           name="account"
           size={24}
-          color={pathname === '/profile' ? '#7E8FA6' : '#555'}
+          color={pathname === '/myWarranties' ? '#7E8FA6' : '#555'}
         />
         <Text style={[
           styles.navText,
-          pathname === '/profile' && styles.activeNavText
+          pathname === '/myWarranties' && styles.activeNavText
         ]}>
-          Profile
+          My Warranties
         </Text>
       </TouchableOpacity>
 
@@ -102,28 +102,20 @@ const styles = StyleSheet.create({
   bottomNav: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#D2BBA1',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    width: '100%',
+    backgroundColor: '#E9E0D4',
+    paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: '#DDD',
     position: 'absolute',
     bottom: 0,
-    left: 0,
-    right: 0,
   },
   navButton: {
     alignItems: 'center',
-    paddingVertical: 4,
   },
   navText: {
-    fontSize: 10,
+    fontSize: 12,
     color: '#555',
-    marginTop: 2,
-  },
-  activeNavText: {
-    color: '#7E8FA6',
-    fontWeight: 'bold',
   },
 });
 

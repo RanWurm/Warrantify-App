@@ -1,8 +1,12 @@
+// screens/home.tsx
+
 import { Stack } from 'expo-router';
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
+import BottomNavBar from '../components/BottomNavBar';
+import AddWarrantyButton from '../components/AddWarrantyButton';
 
 export default function home() {
   const [fontsLoaded] = useFonts({
@@ -10,9 +14,20 @@ export default function home() {
     'InriaSerif-Bold': require('../../assets/fonts/InriaSerif-Bold.ttf'),
   });
 
+  const { width, height } = useWindowDimensions();
+
   if (!fontsLoaded) {
     return null; // Render nothing while fonts are loading
   }
+
+  // Calculate dynamic sizes based on screen dimensions
+  const logoSize = width * 0.3; // 30% of screen width
+  const titleFontSize = width * 0.07; // 7% of screen width
+  const subtitleFontSize = width * 0.045; // 4.5% of screen width
+  const categorySize = width * 0.25; // 25% of screen width
+  const iconSize = categorySize * 0.36; // 36% of category size
+  const navIconSize = width * 0.06; // 6% of screen width
+  const navFontSize = width * 0.03; // 3% of screen width
 
   return (
     <>
@@ -21,11 +36,14 @@ export default function home() {
 
       <View style={styles.container}>
         {/* Logo */}
-        <Image source={require('../../assets/images/warrantylogo.png')} style={styles.logo} />
+        <Image
+          source={require('../../assets/images/warrantylogo.png')}
+          style={[styles.logo, { width: logoSize, height: logoSize }]}
+        />
 
         {/* Title and Subtitle */}
-        <Text style={styles.title}>Warrantify</Text>
-        <Text style={styles.subtitle}>Warranty Management App</Text>
+        <Text style={[styles.title, { fontSize: titleFontSize }]}>Warrantify</Text>
+        <Text style={[styles.subtitle, { fontSize: subtitleFontSize }]}>Warranty Management App</Text>
 
         {/* Grid of Categories */}
         <FlatList
@@ -43,9 +61,9 @@ export default function home() {
           keyExtractor={(item) => item.id}
           numColumns={3}
           renderItem={({ item }) => (
-            <View style={styles.categoryContainer}>
+            <View style={[styles.categoryContainer, { width: categorySize, height: categorySize }]}>
               <View style={styles.iconContainer}>
-                <Ionicons name={item.icon} size={36} color="#000" />
+                <Ionicons name={item.icon} size={iconSize} color="#000" />
               </View>
               <View style={styles.labelContainer}>
                 <Text style={styles.labelText}>{item.name}</Text>
@@ -56,29 +74,10 @@ export default function home() {
         />
 
         {/* Add Warranty Button */}
-        <TouchableOpacity style={styles.addButton}>
-          <Text style={styles.addButtonText}>Add Warranty</Text>
-        </TouchableOpacity>
+        <AddWarrantyButton />
 
         {/* Bottom Navigation */}
-        <View style={styles.bottomNav}>
-          <TouchableOpacity style={styles.navButton}>
-            <Ionicons name="construct-outline" size={24} color="#555" />
-            <Text style={styles.navText}>Service centers</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navButton}>
-            <Ionicons name="heart-outline" size={24} color="#555" />
-            <Text style={styles.navText}>Recommended</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navButton}>
-            <Ionicons name="layers-outline" size={24} color="#555" />
-            <Text style={styles.navText}>My Products</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navButton}>
-            <Ionicons name="home-outline" size={24} color="#555" />
-            <Text style={styles.navText}>Home</Text>
-          </TouchableOpacity>
-        </View>
+        <BottomNavBar />
       </View>
     </>
   );
@@ -92,36 +91,30 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   logo: {
-    width: 150,
-    height: 150,
     resizeMode: 'contain',
     marginBottom: 10,
-	marginTop:40,
+    marginTop: 40,
   },
   title: {
-    fontSize: 30,
     fontWeight: 'bold',
     fontFamily: 'InriaSerif-Bold',
     marginTop: 0,
   },
   subtitle: {
-    fontSize: 20,
     color: '#666',
     marginBottom: 20,
     fontFamily: 'InriaSerif-Regular',
   },
   grid: {
     alignItems: 'center',
-    paddingBottom: 100,
-	marginTop: 20,
+    paddingBottom: 150, // Increased padding to accommodate AddWarrantyButton and BottomNavBar
+    marginTop: 20,
   },
   categoryContainer: {
-    margin: 20,
+    margin: 10,
     alignItems: 'center',
     borderRadius: 12,
     backgroundColor: '#E8E8E8',
-    width: 100,
-    height: 100,
     shadowColor: '#000',
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.2,
@@ -150,39 +143,5 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: 'InriaSerif-Bold',
     color: '#000',
-  },
-  addButton: {
-    position: 'absolute',
-    bottom: 70,
-    alignSelf: 'center',
-    backgroundColor: '#7E8FA6',
-    padding: 12,
-    borderRadius: 24,
-    alignItems: 'center',
-    width: '80%',
-	marginBottom: 20,
-  },
-  addButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    backgroundColor: '#E9E0D4',
-    paddingVertical: 10,
-    borderTopWidth: 1,
-    borderTopColor: '#DDD',
-    position: 'absolute',
-    bottom: 0,
-  },
-  navButton: {
-    alignItems: 'center',
-  },
-  navText: {
-    fontSize: 12,
-    color: '#555',
   },
 });

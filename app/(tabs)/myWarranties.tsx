@@ -1,3 +1,5 @@
+// myWarranties.tsx
+
 import React from 'react';
 import {
   View,
@@ -12,52 +14,50 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Progress from 'react-native-progress'; // Import progress library
 import { Svg, Circle } from 'react-native-svg';
-import { Ionicons } from '@expo/vector-icons';
+import BottomNavBar from '../components/BottomNavBar';
+import AddWarrantyButton from '../components/AddWarrantyButton'; // Import the new component
 
 // WarrantyItem Component
 const WarrantyItem = ({ title, subtitle, date, timeAgo, iconName, progress }) => {
-	// Determine the color of the progress bar based on progress level
-	let progressColor = '#7E8FA6'; // Default color
-	if (progress >= 0.75) {
-	  progressColor = '#AF6F6F'; // Red for low progress
-	} else if (progress >= 0.5) {
-	  progressColor = '#FDCB6E'; // Yellow for medium progress
-	} else {
-	  progressColor ='#B3D2A1'; // Green for high progress
-	}
-  
-	return (
-	  <View style={styles.warrantyItem}>
-		<MaterialCommunityIcons name={iconName} size={32} color="#000" style={styles.icon} />
-		<View style={styles.warrantyInfo}>
-		  <Text style={styles.itemTitle}>{title}</Text>
-		  <Text style={styles.itemSubtitle}>{subtitle}</Text>
-		</View>
-		<View style={styles.warrantyProgress}>
-		  <View style={styles.dateRow}>
-			<MaterialCommunityIcons name="calendar" size={16} color="#000" style={styles.iconSpacing} />
-			<Text style={styles.dateText}>{date}</Text>
-		  </View>
-		  <Progress.Bar
-			progress={progress}
-			width={150}
-			color={progressColor}
-			unfilledColor="#E8E8E8"
-			borderWidth={0}
-			height={8}
-			style={styles.progressBar}
-		  />
-		  <View style={styles.timeRow}>
-			<MaterialCommunityIcons name="clock-fast" size={16} color="#000" style={styles.iconSpacing} />
-			<Text style={styles.timeAgoText}>{timeAgo}</Text>
-		  </View>
-		</View>
-	  </View>
-	);
-  };
-  
-  
-  
+  // Determine the color of the progress bar based on progress level
+  let progressColor = '#7E8FA6'; // Default color
+  if (progress >= 0.75) {
+    progressColor = '#AF6F6F'; // Red for low progress
+  } else if (progress >= 0.5) {
+    progressColor = '#FDCB6E'; // Yellow for medium progress
+  } else {
+    progressColor = '#B3D2A1'; // Green for high progress
+  }
+
+  return (
+    <View style={styles.warrantyItem}>
+      <MaterialCommunityIcons name={iconName} size={32} color="#000" style={styles.icon} />
+      <View style={styles.warrantyInfo}>
+        <Text style={styles.itemTitle}>{title}</Text>
+        <Text style={styles.itemSubtitle}>{subtitle}</Text>
+      </View>
+      <View style={styles.warrantyProgress}>
+        <View style={styles.dateRow}>
+          <MaterialCommunityIcons name="calendar" size={16} color="#000" style={styles.iconSpacing} />
+          <Text style={styles.dateText}>{date}</Text>
+        </View>
+        <Progress.Bar
+          progress={progress}
+          width={150}
+          color={progressColor}
+          unfilledColor="#E8E8E8"
+          borderWidth={0}
+          height={8}
+          style={styles.progressBar}
+        />
+        <View style={styles.timeRow}>
+          <MaterialCommunityIcons name="clock-fast" size={16} color="#000" style={styles.iconSpacing} />
+          <Text style={styles.timeAgoText}>{timeAgo}</Text>
+        </View>
+      </View>
+    </View>
+  );
+};
 
 const myWarranties = () => {
   const warranties = [
@@ -183,26 +183,6 @@ const myWarranties = () => {
         </View>
       </View>
 
-	  {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navButton}>
-          <Ionicons name="construct-outline" size={24} color="#555" />
-          <Text style={styles.navText}>Service centers</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton}>
-          <Ionicons name="heart-outline" size={24} color="#555" />
-          <Text style={styles.navText}>Recommended</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton}>
-          <Ionicons name="layers-outline" size={24} color="#555" />
-          <Text style={styles.navText}>My Products</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navButton}>
-          <Ionicons name="home-outline" size={24} color="#555" />
-          <Text style={styles.navText}>Home</Text>
-        </TouchableOpacity>
-      </View>
-
       {/* Warranties List */}
       <ScrollView style={styles.warrantyList}>
         {warranties.map((warranty, index) => (
@@ -212,9 +192,10 @@ const myWarranties = () => {
       </ScrollView>
 
       {/* Add Warranty Button */}
-      <TouchableOpacity style={styles.addButton}>
-        <Text style={styles.addButtonText}>Add Warranty</Text>
-      </TouchableOpacity>
+      <AddWarrantyButton />
+
+      {/* Bottom Navigation */}
+      <BottomNavBar />
     </SafeAreaView>
   );
 };
@@ -281,13 +262,12 @@ const styles = StyleSheet.create({
   statText: {
     fontSize: 12,
     color: '#999',
-	fontFamily: 'InriaSerif-Bold',
+    fontFamily: 'InriaSerif-Bold',
   },
   subText: {
     fontSize: 12,
     color: '#999',
-	fontFamily: 'InriaSerif-Bold',
-
+    fontFamily: 'InriaSerif-Bold',
   },
   ratingStars: {
     flexDirection: 'row',
@@ -312,8 +292,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   searchBar: {
     flexDirection: 'row',
@@ -337,8 +316,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
     marginLeft: 5,
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   searchInput: {
     flexDirection: 'row',
@@ -354,8 +332,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
     marginRight: 5,
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   warrantyList: {
     flex: 1,
@@ -376,14 +353,12 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 16,
     color: '#000',
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   itemSubtitle: {
     color: '#666',
     marginTop: 5,
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   warrantyDates: {
     alignItems: 'flex-end',
@@ -409,8 +384,7 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 12,
     color: '#666',
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   progressBar: {
     borderRadius: 5,
@@ -418,48 +392,18 @@ const styles = StyleSheet.create({
   timeAgoText: {
     fontSize: 12,
     color: '#7E8FA6',
-	fontFamily: 'InriaSerif-Regular',
-
+    fontFamily: 'InriaSerif-Regular',
   },
   bottomPadding: {
     height: 80,
   },
   addButton: {
-    backgroundColor: '#7E8FA6',
-    padding: 15,
-    margin: 10,
-    borderRadius: 24,
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 70,
-    left: 0,
-    right: 0,
-    marginHorizontal: 20,
+    // Removed as we're using AddWarrantyButton
   },
   addButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '100%',
-    backgroundColor: '#E9E0D4',
-    paddingVertical: 10,
-    borderTopWidth: 1,
-    borderTopColor: '#DDD',
-    position: 'absolute',
-    bottom: 0,
-  },
-  navButton: {
-    alignItems: 'center',
-  },
-  navText: {
-    fontSize: 12,
-    color: '#555',
+    // Removed as we're using AddWarrantyButton
   },
 });
 
 export default myWarranties;
+

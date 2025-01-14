@@ -33,7 +33,7 @@ export default function LoginScreen() {
       console.log('User logged in:', userCredential.user.uid);
 
       // Navigate to home page or wherever you want
-      router.push('/');
+      router.push('/home');
     } catch (error) {
       // Catch and handle different auth errors
       if (error.code === 'auth/user-not-found') {
