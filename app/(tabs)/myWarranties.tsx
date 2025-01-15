@@ -1,6 +1,5 @@
-// myWarranties.tsx
-
-import React from 'react';
+// app/screens/myWarranties.tsx
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,23 +9,33 @@ import {
   TextInput,
   Image,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import * as Progress from 'react-native-progress'; // Import progress library
+import * as Progress from 'react-native-progress';
 import { Svg, Circle } from 'react-native-svg';
 import BottomNavBar from '../components/BottomNavBar';
-import AddWarrantyButton from '../components/AddWarrantyButton'; // Import the new component
+import AddWarrantyButton from '../components/AddWarrantyButton';
+import { UserContext } from '../context/UserContext'; // Adjust the path as needed
+import axios from 'axios';
 
-// WarrantyItem Component
-const WarrantyItem = ({ title, subtitle, date, timeAgo, iconName, progress }) => {
-  // Determine the color of the progress bar based on progress level
-  let progressColor = '#7E8FA6'; // Default color
-  if (progress >= 0.75) {
-    progressColor = '#AF6F6F'; // Red for low progress
-  } else if (progress >= 0.5) {
-    progressColor = '#FDCB6E'; // Yellow for medium progress
+interface WarrantyItemProps {
+  title: string;
+  subtitle: string;
+  date: string;
+  timeAgo: string;
+  iconName: string;
+  progress: number;
+}
+
+const WarrantyItem: React.FC<WarrantyItemProps> = ({ title, subtitle, date, timeAgo, iconName, progress }) => {
+  let progressColor = '#7E8FA6';
+  if (progress >= 65) {
+    progressColor = '#AF6F6F';
+  } else if (progress >= 40) {
+    progressColor = '#FDCB6E';
   } else {
-    progressColor = '#B3D2A1'; // Green for high progress
+    progressColor = '#B3D2A1';
   }
 
   return (
@@ -59,49 +68,65 @@ const WarrantyItem = ({ title, subtitle, date, timeAgo, iconName, progress }) =>
   );
 };
 
-const myWarranties = () => {
-  const warranties = [
-    {
-      title: 'Ipad',
-      subtitle: 'Apple 10 gen 10.9 inch',
-      date: '14/05/2025',
-      timeAgo: 'in 3 months',
-      iconName: 'tablet',
-      progress: 0.75, // 75% progress
-    },
-    {
-      title: 'Headphones',
-      subtitle: 'JBL 720BT',
-      date: '16/08/2025',
-      timeAgo: 'in 8 months',
-      iconName: 'headphones',
-      progress: 0.3, // 30% progress
-    },
-    {
-      title: 'Earphones',
-      subtitle: 'Apple Airpods gen 2',
-      date: '04/02/2024',
-      timeAgo: '1 year ago',
-      iconName: 'earbuds',
-      progress: 1.0, // Expired
-    },
-    {
-      title: 'Laptop',
-      subtitle: 'Lenovo yoga slim 7-15IMH',
-      date: '25/05/2025',
-      timeAgo: '5 months ago',
-      iconName: 'laptop',
-      progress: 0.50, // 50% progress
-    },
-    {
-      title: 'Hair Dryer',
-      subtitle: 'Dyson Air wrap',
-      date: '20/01/2025',
-      timeAgo: 'in one month',
-      iconName: 'hair-dryer',
-      progress: 0.90, // 90% progress
-    },
-  ];
+const MyWarranties = () => {
+  const { userId } = useContext(UserContext);
+  const [warranties, setWarranties] = useState<WarrantyItemProps[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchWarranties = async () => {
+      console.log(userId)
+      if (userId) {
+        try {
+          // Update the backendURL to match your Flask server
+          const backendURL = 'http://10.0.0.5:5000/get_warranties';
+          console.log('Fetching warranties for user:', userId);
+          console.log('Backend URL:', backendURL);
+          
+          const response = await axios.get(backendURL, {
+            params: { user_id: userId },
+            timeout: 5000, // 5 second timeout
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            }
+          });
+          
+          console.log('Response received:', response.data);
+          setWarranties(response.data.warranties);
+          setLoading(false);
+        } catch (err: any) {
+          console.error('Detailed error:', {
+            message: err.message,
+            code: err.code,
+            response: err.response,
+            config: err.config
+          });
+          setError(`Failed to fetch warranties: ${err.message}`);
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchWarranties();
+  }, [userId]);
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#4f3e2f" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.loaderContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -110,7 +135,7 @@ const myWarranties = () => {
         <Text style={styles.title}>My Warranties</Text>
         <View style={styles.profileContainer}>
           <Image
-            source={require('../../assets/images/profile-picture.jpg')} // Replace with your image path
+            source={require('../../assets/images/profile-picture.jpg')} // Adjust the path if necessary
             style={styles.profileImage}
           />
           <View style={styles.progressTextContainer}>
@@ -371,15 +396,15 @@ const styles = StyleSheet.create({
   dateRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5, // Space between the date row and progress bar
+    marginBottom: 5,
   },
   timeRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 5, // Space between the progress bar and time row
+    marginTop: 5,
   },
   iconSpacing: {
-    marginRight: 5, // Space between the icon and text
+    marginRight: 5,
   },
   dateText: {
     fontSize: 12,
@@ -397,13 +422,15 @@ const styles = StyleSheet.create({
   bottomPadding: {
     height: 80,
   },
-  addButton: {
-    // Removed as we're using AddWarrantyButton
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  addButtonText: {
-    // Removed as we're using AddWarrantyButton
+  errorText: {
+    color: 'red',
+    fontSize: 16,
   },
 });
 
-export default myWarranties;
-
+export default MyWarranties;

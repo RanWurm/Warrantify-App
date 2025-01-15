@@ -74,9 +74,7 @@ class ProductRecommender:
             pid = self.product_ids[idx]
             product_info = self.products_dict[pid]
             similar_products.append({
-                'product_id': pid,
-                'category_id': product_info['category_id'],
-                'category_code': product_info['category_code'],
+                'category_code': product_info['category_code'].split('.')[-1],
                 'brand': product_info['brand'],
                 'similarity_score': 1 - distances[0][i]
             })

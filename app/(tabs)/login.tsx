@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// app/screens/LoginScreen.tsx
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -9,13 +10,13 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-
-// 1) Import Firebase Auth functions
 import { auth } from '../../constants/firebase';
-import { signInWithEmailAndPassword,onAuthStateChanged } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { UserContext } from '../context/UserContext'; // Adjust the path as needed
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -23,27 +24,35 @@ export default function LoginScreen() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const router = useRouter();
+  const { assignUserId } = useContext(UserContext);
 
-  // 2) Handle Login using Firebase Auth
   const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password.');
+      return;
+    }
+
     try {
       // Attempt to sign in
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      // If successful, userCredential.user contains the user info
-      console.log('User logged in:', userCredential.user.uid);
+      const firebaseUserId = userCredential.user.uid;
+      console.log('User logged in:', firebaseUserId);
+
+      // Assign or retrieve `user_id`
+      await assignUserId(firebaseUserId);
 
       // Navigate to home page or wherever you want
       router.push('/home');
-    } catch (error) {
-      // Catch and handle different auth errors
+    } catch (error: any) {
+      // Handle different auth errors
       if (error.code === 'auth/user-not-found') {
-        alert('No user found with this email. Please register first.');
+        Alert.alert('Login Failed', 'No user found with this email. Please register first.');
       } else if (error.code === 'auth/wrong-password') {
-        alert('Incorrect password. Please try again.');
+        Alert.alert('Login Failed', 'Incorrect password. Please try again.');
       } else if (error.code === 'auth/invalid-email') {
-        alert('Invalid email format. Please check and try again.');
+        Alert.alert('Login Failed', 'Invalid email format. Please check and try again.');
       } else {
-        alert('Login failed: ' + error.message);
+        Alert.alert('Login Failed', `Error: ${error.message}`);
       }
       console.error('Error signing in:', error);
     }
@@ -55,9 +64,10 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Header Section */}
       <View style={styles.header}>
         <Image
-          source={require('../../assets/images/warrantylogo.png')} 
+          source={require('../../assets/images/warrantylogo.png')} // Adjust the path if necessary
           style={styles.logo}
         />
         <Text style={styles.title}>Warrantify</Text>
@@ -66,10 +76,12 @@ export default function LoginScreen() {
         </Text>
       </View>
 
+      {/* Form Section */}
       <KeyboardAvoidingView
         style={styles.formContainer}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
+        {/* Email Input */}
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -82,6 +94,7 @@ export default function LoginScreen() {
           />
         </View>
 
+        {/* Password Input */}
         <View style={styles.passwordContainer}>
           <TextInput
             style={styles.input}
@@ -101,9 +114,10 @@ export default function LoginScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* Login Button */}
         <TouchableOpacity
           style={styles.button}
-          onPress={handleLogin} // Calls handleLogin on button press
+          onPress={handleLogin}
           activeOpacity={0.8}
         >
           <LinearGradient
@@ -116,10 +130,12 @@ export default function LoginScreen() {
           </LinearGradient>
         </TouchableOpacity>
 
+        {/* Forgot Password */}
         <TouchableOpacity style={styles.forgotPassword}>
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
         </TouchableOpacity>
 
+        {/* Sign Up */}
         <View style={styles.signupContainer}>
           <Text style={styles.signupText}>Don't have an account? </Text>
           <TouchableOpacity onPress={navigateToRegister}>
@@ -136,7 +152,7 @@ const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5ede6', // Light beige background
+    backgroundColor: '#f5ede6',
     paddingHorizontal: 24,
     justifyContent: 'center',
   },
@@ -152,12 +168,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#4f3e2f', // Dark brown text
+    color: '#4f3e2f',
     letterSpacing: 0.5,
   },
   subtitle: {
     fontSize: 16,
-    color: '#7a6858', // Medium brown text
+    color: '#7a6858',
     marginTop: 8,
     textAlign: 'center',
     maxWidth: '80%',
@@ -192,7 +208,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   showPasswordText: {
-    color: '#4f3e2f', // Dark brown text
+    color: '#4f3e2f',
     fontSize: 14,
     fontWeight: '600',
   },
@@ -201,7 +217,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   forgotPasswordText: {
-    color: '#4f3e2f', // Dark brown text
+    color: '#4f3e2f',
     fontSize: 14,
   },
   button: {
@@ -228,11 +244,11 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   signupText: {
-    color: '#7a6858', // Medium brown text
+    color: '#7a6858',
     fontSize: 14,
   },
   signupLink: {
-    color: '#4f3e2f', // Dark brown text
+    color: '#4f3e2f',
     fontSize: 14,
     fontWeight: '600',
   },
