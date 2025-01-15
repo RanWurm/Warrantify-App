@@ -107,6 +107,8 @@ def get_warranties():
         iconName = title.lower()
         if iconName == 'cartrige':
             iconName = 'printer'
+        if iconName == 'videocards':
+            iconName ='chip'
         
         # Calculate progress percentage (0% to 100%)
         progress = (days_diff / 365) * 100
