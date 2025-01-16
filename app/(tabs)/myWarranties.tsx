@@ -130,24 +130,27 @@ const MyWarranties = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header Section */}
       <View style={styles.header}>
         <Text style={styles.title}>My Warranties</Text>
         <View style={styles.profileContainer}>
-          <Image
-            source={require('../../assets/images/profile-picture.jpg')} // Adjust the path if necessary
-            style={styles.profileImage}
-          />
+          <View style={styles.profileImageWrapper}>
+            <Image
+              source={require('../../assets/images/profile-picture.jpg')}
+              style={styles.profileImage}
+            />
+          </View>
           <View style={styles.progressTextContainer}>
             <View style={styles.progressStats}>
               <View style={styles.progressStatItem}>
                 <Text style={styles.boldPercentage}>30%</Text>
                 <Text style={styles.statText}>Expired</Text>
               </View>
+              <View style={styles.divider} />
               <View style={styles.progressStatItem}>
                 <Text style={styles.boldPercentage}>65%</Text>
                 <Text style={styles.statText}>In Progress</Text>
               </View>
+              <View style={styles.divider} />
               <View style={styles.progressStatItem}>
                 <Text style={styles.boldPercentage}>5%</Text>
                 <Text style={styles.statText}>Recent</Text>
@@ -162,31 +165,33 @@ const MyWarranties = () => {
               <MaterialCommunityIcons name="star-outline" size={16} color="#C6A992" />
             </View>
           </View>
-          <View style={styles.progressCircle}>
-            <Svg width={70} height={70}>
-              <Circle
-                cx="35"
-                cy="35"
-                r="30"
-                stroke="#E8E8E8"
-                strokeWidth="6"
-                fill="none"
-              />
-              <Circle
-                cx="35"
-                cy="35"
-                r="30"
-                stroke="#C6A992"
-                strokeWidth="6"
-                strokeDasharray="188"
-                strokeDashoffset="47"
-                strokeLinecap="round"
-                fill="none"
-                transform="rotate(-90, 35, 35)"
-              />
-            </Svg>
-            <View style={styles.progressCircleInner}>
-              <Text style={styles.progressCircleText}>65%</Text>
+          <View style={styles.progressCircleContainer}>
+            <View style={styles.progressCircle}>
+              <Svg width={60} height={60}>
+                <Circle
+                  cx="30"
+                  cy="30"
+                  r="25"
+                  stroke="#E8E8E8"
+                  strokeWidth="6"
+                  fill="none"
+                />
+                <Circle
+                  cx="30"
+                  cy="30"
+                  r="25"
+                  stroke="#C6A992"
+                  strokeWidth="6"
+                  strokeDasharray="157"
+                  strokeDashoffset="55"
+                  strokeLinecap="round"
+                  fill="none"
+                  transform="rotate(-90, 30, 30)"
+                />
+              </Svg>
+              <View style={styles.progressCircleInner}>
+                <Text style={styles.progressCircleText}>65%</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -231,18 +236,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9E0D4',
   },
   header: {
-    padding: 20,
+    padding: 15,
     backgroundColor: '#F5EFE6',
     borderBottomWidth: 1,
     borderBottomColor: '#DDD',
   },
   title: {
-    fontSize: 35,
+    fontSize: 32,
     fontFamily: 'InriaSerif-Bold',
     color: '#000',
     textAlign: 'center',
-    marginBottom: 20,
-    marginTop: 10,
+    marginBottom: 15,
+    marginTop: 5,
   },
   profileContainer: {
     flexDirection: 'row',
@@ -258,34 +263,60 @@ const styles = StyleSheet.create({
     borderColor: '#7E8FA6',
     borderWidth: 1,
   },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+  profileContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#F5EFE6',
+    padding: 12,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    borderColor: '#7E8FA6',
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  profileImageWrapper: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#DDD',
   },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+  },
   progressTextContainer: {
     flex: 1,
-    marginHorizontal: 15,
-    alignItems: 'center',
+    paddingHorizontal: 10,
   },
   progressStats: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
-    marginBottom: 10,
+    alignItems: 'center',
+    marginBottom: 8,
   },
   progressStatItem: {
+    flex: 1,
     alignItems: 'center',
   },
+  divider: {
+    width: 1,
+    height: 20,
+    backgroundColor: '#DDD',
+    marginHorizontal: 5,
+  },
   boldPercentage: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#000',
   },
   statText: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#999',
     fontFamily: 'InriaSerif-Bold',
   },
@@ -293,28 +324,34 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#999',
     fontFamily: 'InriaSerif-Bold',
+    textAlign: 'center',
+    marginTop: 5,
   },
   ratingStars: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 5,
+    marginTop: 4,
   },
   progressCircle: {
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  progressCircleContainer: {
+    width: 60,
+    marginLeft: 10,
+  },
   progressCircleInner: {
     position: 'absolute',
-    width: 58,
-    height: 58,
-    borderRadius: 29,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: '#FFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
   progressCircleText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#333',
     fontFamily: 'InriaSerif-Regular',
