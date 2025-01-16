@@ -18,12 +18,26 @@ unique_prods = sorted(list(set(products)))
 trie = load_trie(unique_prods)
 
 
-data_file_path = 'data_sets/recommendation_sys_datasets/data.csv'
+data_file_path = 'data_sets/recommendation_sys_datasets/buying_users.csv'
 df = pd.read_csv(data_file_path)
 recommender = ProductRecommender()
 recommender.fit(df)
 
+icon_defaults = {
+    "cpu": "chip",
+    "gpu": "chip",
+    "soundcard": "developer-board",
+    "sound_card": "developer-board",
+    'videocards':"developer-board",
+    "motherboard": "developer-board",
+    "ram": "memory",
+    "storage": "storage_icon",
+    "network": "network_icon",
+    "power": "power_icon",
+    "cartrige":"printer",
+    "hdd":"harddisk",
 
+}
 
 @app.route('/autocomplete', methods=['GET'])
 def autocomplete():
@@ -40,10 +54,15 @@ def autocomplete():
 def health():
     return "Python server is running!"
 
-@app.route('/get_recommendation', methods=['GET'])
+@app.route('/get_recommendation', methods=['GET']) 
 def get_recommendation():
-    user_id = request.args.get('user_id', type=int)
-    print(user_id)
+    row = request.args.get('user_id', type=int)
+    if row is None or row < 1 or row > len(df):
+        return jsonify({'error': 'Invalid or missing user_id'}), 400
+
+    user_id = df.loc[row - 1, 'user_id']
+    print(f"User ID: {user_id}")
+
     if user_id is None:
         return jsonify({'error': 'user_id is required'}), 400
 
@@ -61,14 +80,20 @@ def get_recommendation():
     recommendations = recommender.get_recommendations(random_viewed_product_id, n_recommendations=5)
     if not recommendations:
         return jsonify({'message': 'No recommendations found for the randomly chosen product'}), 200
-
+    
+    for recommendation in recommendations:
+        category_code = recommendation.get('category_code', '').lower()
+        icon_name = icon_defaults.get(category_code, 'device')  # Default to 'device' if not found
+        recommendation['iconName'] = icon_name  # Assign to 'iconName' key
+    
     # Return the recommendations as a JSON response
     return jsonify({'recommendations': recommendations}), 200
 
     
 @app.route('/get_warranties', methods=['GET'])
 def get_warranties():
-    user_id = request.args.get('user_id', type=int)
+    row = request.args.get('user_id', type=int)
+    user_id = df.loc[row - 1, 'user_id']
     print(user_id)
     if user_id is None:
         return jsonify({'error': 'user_id is required'}), 400
@@ -105,10 +130,9 @@ def get_warranties():
         
         # Icon name based on title (assuming iconName matches title)
         iconName = title.lower()
-        if iconName == 'cartrige':
-            iconName = 'printer'
-        if iconName == 'videocards':
-            iconName ='chip'
+        if iconName in icon_defaults:
+            iconName = icon_defaults[iconName]
+        
         
         # Calculate progress percentage (0% to 100%)
         progress = (days_diff / 365) * 100

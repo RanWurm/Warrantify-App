@@ -74,7 +74,7 @@ export default function RegisterScreen() {
       console.log('User data saved in Firestore');
 
       // 4) Navigate to the login screen
-      router.push('/login');
+      router.replace('/login');
 
     } catch (error) {
       console.log('Error signing up: ', error.message);

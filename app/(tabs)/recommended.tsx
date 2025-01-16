@@ -5,7 +5,6 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,16 +12,16 @@ import BottomNavBar from '../components/BottomNavBar';
 import axios from 'axios';
 import { UserContext } from '../context/UserContext'; // Adjust the path if needed
 
-// (1) Our recommended item structure
+// Recommended product structure
 interface RecommendedProduct {
   title: string;
   iconName: string;
 }
 
-// (2) The item component
+// Item component
 const RecommendedItem = ({ title, iconName }: RecommendedProduct) => (
   <View style={styles.recommendedItem}>
-    <MaterialCommunityIcons name={iconName} size={40} color="#4f3e2f" />
+    <MaterialCommunityIcons name={iconName as any} size={40} color="#4f3e2f" />
     <View style={styles.recommendedInfo}>
       <Text style={styles.itemTitle}>{title}</Text>
     </View>
@@ -35,11 +34,10 @@ const RecommendedPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // (3) Adjust to your actual server or local IP
+  // Adjust to your actual server or local IP
   const backendURL = 'http://10.0.0.5:5000';
 
   useEffect(() => {
-    // (4) If we have a userId, fetch recommendations
     const fetchRecommendations = async () => {
       if (!userId) {
         setRecommendedProducts([]);
@@ -50,30 +48,13 @@ const RecommendedPage = () => {
         const response = await axios.get(`${backendURL}/get_recommendation`, {
           params: { user_id: userId },
         });
-        // Response shape: { recommendations: [ { product_id, category_code, brand, ...}, ... ] }
-        // Map the server data to your local structure
         const rawRecs = response.data.recommendations || [];
         
-        // (5) Convert the raw data from the backend to the structure we need for rendering
-        const mappedRecs = rawRecs.map((rec: any) => {
-          // Example logic:
-          //   - Use the brand or product_id as the title
-          //   - Derive an iconName from category_code or your own rules
-          const categoryCode = rec.category_code || '';
-          const lastWord = categoryCode.split('.').pop() || 'device';
-
-          // Simple fallback icon logic:
-          let derivedIconName = 'cellphone';
-          if (lastWord.includes('headphone')) derivedIconName = 'headphones';
-          else if (lastWord.includes('tablet')) derivedIconName = 'tablet';
-          else if (lastWord.includes('telephone')) derivedIconName = 'cellphone';
-          // Add more mapping if needed
-
-          return {
-            title: rec.brand ? rec.brand + ' ' + lastWord : 'Product ' + rec.product_id,
-            iconName: derivedIconName,
-          };
-        });
+        // Map the server data to your local structure
+        const mappedRecs: RecommendedProduct[] = rawRecs.map((rec: any) => ({
+          title: rec.brand ? `${rec.brand} ${rec.category_code.split('.').pop() || 'Product'}` : `Product ${rec.product_id}`,
+          iconName: rec.iconName || 'cellphone', // Default to 'cellphone' if iconName is not provided
+        }));
 
         setRecommendedProducts(mappedRecs);
         setLoading(false);
@@ -87,7 +68,7 @@ const RecommendedPage = () => {
     fetchRecommendations();
   }, [userId]);
 
-  // (6) Handle loading and error states
+  // Handle loading and error states
   if (loading) {
     return (
       <View style={styles.loaderContainer}>
@@ -104,7 +85,7 @@ const RecommendedPage = () => {
     );
   }
 
-  // (7) Render recommended products from server
+  // Render recommended products from server
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -147,6 +128,7 @@ const styles = StyleSheet.create({
   },
   recommendedList: {
     flex: 1,
+    paddingHorizontal: 10,
   },
   recommendedItem: {
     flexDirection: 'row',
@@ -155,6 +137,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#e0d2c2', // Light border color
+    backgroundColor: '#fff',
+    borderRadius: 10,
   },
   recommendedInfo: {
     marginLeft: 15,

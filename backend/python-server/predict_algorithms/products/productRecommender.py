@@ -76,7 +76,6 @@ class ProductRecommender:
             similar_products.append({
                 'category_code': product_info['category_code'].split('.')[-1],
                 'brand': product_info['brand'],
-                'similarity_score': 1 - distances[0][i]
             })
         
         return similar_products[:n_recommendations]

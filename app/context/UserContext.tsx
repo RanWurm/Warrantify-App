@@ -24,7 +24,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   // Function to generate a random user_id between 1 and 33296
   const generateRandomUserId = (): number => {
-    return Math.floor(Math.random() * 5000) + 1;
+    return Math.floor(Math.random() * 200000) + 1;
   };
 
   // Assign or retrieve user_id based on Firebase UID
